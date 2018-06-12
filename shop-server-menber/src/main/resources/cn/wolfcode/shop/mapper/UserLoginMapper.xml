@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.wolfcode.shop.mapper.UserLoginMapper">
+  <resultMap id="BaseResultMap" type="cn.wolfcoe.shop.domain.UserLogin">
+    <id column="id" property="id" />
+    <result column="username" property="username" />
+    <result column="password" property="password" />
+    <result column="status" property="status" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey">
+    delete from user_login
+    where id = #{id}
+  </delete>
+  <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+    insert into user_login (username, password, status)
+    values (#{username}, #{password}, #{status})
+  </insert>
+  <update id="updateByPrimaryKey">
+    update user_login
+    set username = #{username},
+      password = #{password},
+      status = #{status}
+    where id = #{id}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+    select id, username, password, status
+    from user_login
+    where id = #{id}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, username, password, status
+    from user_login
+  </select>
+  <!--判断注册用户是否已经存在-->
+  <select id="selectByUsername" resultMap="BaseResultMap">
+    select id, username, password, status
+    from user_login where username = #{username}
+  </select>
+</mapper>

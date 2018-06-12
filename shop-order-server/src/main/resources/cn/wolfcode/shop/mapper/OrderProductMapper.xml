@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.wolfcode.shop.mapper.OrderProductMapper">
+  <resultMap id="BaseResultMap" type="cn.wolfcode.shop.domain.OrderProduct">
+    <id column="id" property="id" />
+    <result column="order_id" property="orderId" />
+    <result column="sku_id" property="skuId" />
+    <result column="product_name" property="productName" />
+    <result column="product_number" property="productNumber" />
+    <result column="product_price" property="productPrice" />
+    <result column="total_price" property="totalPrice" />
+    <result column="product_img" property="productImg" />
+    <collection property="orderProductPropertyList" ofType="orderProductProperty" column="id" select="cn.wolfcode.shop.mapper.OrderProductPropertyMapper.getOrderProductProperty"/>
+  </resultMap>
+  <delete id="deleteByPrimaryKey">
+    delete from order_product
+    where id = #{id}
+  </delete>
+  <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+    insert into order_product (order_id, sku_id, product_name, product_number, product_price, 
+      total_price, product_img)
+    values (#{orderId}, #{skuId}, #{productName}, #{productNumber}, #{productPrice}, 
+      #{totalPrice}, #{productImg})
+  </insert>
+  <update id="updateByPrimaryKey">
+    update order_product
+    set order_id = #{orderId},
+      sku_id = #{skuId},
+      product_name = #{productName},
+      product_number = #{productNumber},
+      product_price = #{productPrice},
+      total_price = #{totalPrice},
+      product_img = #{productImg}
+    where id = #{id}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+    select id, order_id, sku_id, product_name, product_number, product_price, total_price, 
+    product_img
+    from order_product
+    where id = #{id}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, order_id, sku_id, product_name, product_number, product_price, total_price, 
+    product_img
+    from order_product
+  </select>
+  <select id="selectByOrderId" resultMap="BaseResultMap">
+     select id, order_id, sku_id, product_name, product_number, product_price, total_price,
+    product_img
+    from order_product where order_id = #{id}
+  </select>
+</mapper>

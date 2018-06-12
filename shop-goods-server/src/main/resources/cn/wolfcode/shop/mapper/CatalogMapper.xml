@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.wolfcode.shop.mapper.CatalogMapper">
+  <resultMap id="BaseResultMap" type="cn.wolfcode.shop.domain.Catalog">
+    <id column="id" property="id" />
+    <result column="name" property="name" />
+    <result column="sn" property="sn" />
+    <result column="sort" property="sort" />
+    <result column="parent_id" property="parentId" />
+    <result column="is_parent" property="isParent" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey">
+    delete from catalog
+    where id = #{id}
+  </delete>
+  <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+    insert into catalog (name, sn, sort, parent_id, is_parent)
+    values (#{name}, #{sn}, #{sort}, #{parentId}, #{isParent})
+  </insert>
+  <update id="updateByPrimaryKey">
+    update catalog
+    <set>
+        <if test="name != null">
+            name = #{name},
+        </if>
+        <if test="sn != null">
+            sn = #{sn},
+        </if>
+        <if test="sort != null">
+            sort = #{sort},
+        </if>
+        <if test="parentId != null">
+            parent_id = #{parentId},
+        </if>
+        <if test="isParent != null">
+            is_parent = #{isParent}
+        </if>
+    </set>
+
+    where id = #{id}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+    select id, name, sn, sort, parent_id, is_parent
+    from catalog
+    where id = #{id}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, name, sn, sort, parent_id, is_parent
+    from catalog
+  </select>
+
+  <select id="selectByParentId" resultMap="BaseResultMap">
+    select id, name, sn, sort, parent_id, is_parent
+    from catalog
+    <where>
+      <choose>
+        <when test="id != null">
+          parent_id = #{id}
+        </when>
+        <otherwise>
+          parent_id is null
+        </otherwise>
+      </choose>
+    </where>
+    order by sort
+  </select>
+    <select id="getParentChildrenById" resultType="Long">
+        select count(1) from catalog
+        where parent_id = (select parent_id from catalog where id = #{id})
+    </select>
+    <select id="selectProductCountByCatalogId" resultType="int">
+        select count(1) from product where catalog_id = #{id}
+    </select>
+    <select id="selectPropertyCountByCatalogId" resultType="int">
+        select count(1) from property where catalog_id = #{id}
+    </select>
+    <select id="queryParentByCatalogId" resultMap="BaseResultMap">
+    select id, name, sn, sort, parent_id, is_parent
+    from catalog
+    where FIND_IN_SET(id,getParentIds(#{id}))
+    </select>
+</mapper>

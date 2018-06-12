@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.wolfcode.shop.mapper.OrderActionMapper" >
+  <resultMap id="BaseResultMap" type="cn.wolfcode.shop.domain.OrderAction" >
+    <id column="id" property="id" />
+    <result column="order_id" property="orderId" />
+    <result column="action_user" property="actionUser" />
+    <result column="order_status" property="orderStatus" />
+    <result column="flow_status" property="flowStatus" />
+    <result column="pay_status" property="payStatus" />
+    <result column="action_place" property="actionPlace" />
+    <result column="action_note" property="actionNote" />
+    <result column="action_time" property="actionTime" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from order_action
+    where id = #{id}
+  </delete>
+  <insert id="insert" parameterType="cn.wolfcode.shop.domain.OrderAction" useGeneratedKeys="true" keyProperty="id" >
+    insert into order_action (order_id, action_user, order_status, flow_status, pay_status, action_place, 
+      action_note, action_time)
+    values (#{orderId}, #{actionUser}, #{orderStatus}, #{flowStatus}, #{payStatus}, #{actionPlace}, 
+      #{actionNote}, #{actionTime})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="cn.wolfcode.shop.domain.OrderAction" >
+    update order_action
+    set order_id = #{orderId},
+      action_user = #{actionUser},
+      order_status = #{orderStatus},
+      flow_status = #{flowStatus},
+      pay_status = #{payStatus},
+      action_place = #{actionPlace},
+      action_note = #{actionNote},
+      action_time = #{actionTime}
+    where id = #{id}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select id, order_id, action_user, order_status, flow_status, pay_status, action_place, 
+    action_note, action_time
+    from order_action
+    where id = #{id}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, order_id, action_user, order_status, flow_status, pay_status, action_place, 
+    action_note, action_time
+    from order_action
+  </select>
+  <select id="getOrderAction" resultMap="BaseResultMap">
+    select * from order_action where order_id = #{orderId}
+  </select>
+</mapper>

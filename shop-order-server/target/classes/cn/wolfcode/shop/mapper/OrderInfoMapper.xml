@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.wolfcode.shop.mapper.OrderInfoMapper">
+  <resultMap id="BaseResultMap" type="cn.wolfcode.shop.domain.OrderInfo">
+    <id column="id" property="id" />
+    <result column="order_sn" property="orderSn" />
+    <result column="user_id" property="userId" />
+    <result column="order_amount" property="orderAmount" />
+    <result column="pay_type" property="payType" />
+    <result column="order_status" property="orderStatus" />
+    <result column="flow_status" property="flowStatus" />
+    <result column="pay_status" property="payStatus" />
+    <result column="order_time" property="orderTime" />
+    <result column="phone" property="phone" />
+    <result column="consignee" property="consignee" />
+    <result column="country" property="country" />
+    <result column="province" property="province" />
+    <result column="city" property="city" />
+    <result column="district" property="district" />
+    <result column="address" property="address" />
+    <result column="zipcode" property="zipcode" />
+    <collection property="orderProductList" ofType="orderProduct" column="id" select="cn.wolfcode.shop.mapper.OrderProductMapper.selectByOrderId"/>
+  </resultMap>
+  <delete id="deleteByPrimaryKey">
+    delete from order_info
+    where id = #{id}
+  </delete>
+  <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+    insert into order_info (order_sn, user_id, order_amount, pay_type, order_status, flow_status, 
+      pay_status, order_time, phone, consignee, country, province, city, 
+      district, address, zipcode)
+    values (#{orderSn}, #{userId}, #{orderAmount}, #{payType}, #{orderStatus}, #{flowStatus}, 
+      #{payStatus}, #{orderTime}, #{phone}, #{consignee}, #{country}, #{province}, #{city}, 
+      #{district}, #{address}, #{zipcode})
+  </insert>
+  <update id="updateByPrimaryKey">
+    update order_info
+    set order_sn = #{orderSn},
+      user_id = #{userId},
+      order_amount = #{orderAmount},
+      pay_type = #{payType},
+      order_status = #{orderStatus},
+      flow_status = #{flowStatus},
+      pay_status = #{payStatus},
+      order_time = #{orderTime},
+      phone = #{phone},
+      consignee = #{consignee},
+      country = #{country},
+      province = #{province},
+      city = #{city},
+      district = #{district},
+      address = #{address},
+      zipcode = #{zipcode}
+    where id = #{id}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+    select id, order_sn, user_id, order_amount, pay_type, order_status, flow_status, 
+    pay_status, order_time, phone, consignee, country, province, city, district, address, 
+    zipcode
+    from order_info
+    where id = #{id}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, order_sn, user_id, order_amount, pay_type, order_status, flow_status, 
+    pay_status, order_time, phone, consignee, country, province, city, district, address, 
+    zipcode
+    from order_info
+  </select>
+  <sql id="BaseWhere">
+    <choose>
+      <when test="keyword != null">
+        <where>order_sn like #{keyword}</where>
+      </when>
+    </choose>
+  </sql>
+  <select id="queryCount" resultType="int">
+    select count(id) from order_info
+    <include refid="BaseWhere"/>
+  </select>
+  <select id="queryList" resultMap="BaseResultMap">
+    select id,order_sn,pay_type,order_status,flow_status,pay_status,order_time,consignee,phone,order_amount
+    from order_info
+    <include refid="BaseWhere"/>
+    order by id desc
+    limit #{start},#{pageSize}
+  </select>
+</mapper>

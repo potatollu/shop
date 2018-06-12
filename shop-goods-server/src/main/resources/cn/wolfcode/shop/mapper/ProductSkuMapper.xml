@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.wolfcode.shop.mapper.ProductSkuMapper">
+  <resultMap id="BaseResultMap" type="cn.wolfcode.shop.domain.ProductSku">
+    <id column="id" property="id" />
+    <result column="product_id" property="productId" />
+    <result column="sn" property="sn" />
+    <result column="price" property="price" />
+    <collection property="productSkuPropertyList" column="id"
+                ofType="cn.wolfcode.shop.domain.ProductSkuProperty"
+                select="cn.wolfcode.shop.mapper.ProductSkuPropertyMapper.selectBySkuId"></collection>
+  </resultMap>
+  <delete id="deleteByPrimaryKey">
+    delete from product_sku
+    where id = #{id}
+  </delete>
+  <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+    insert into product_sku (product_id, sn, price)
+    values (#{productId}, #{sn}, #{price})
+  </insert>
+  <update id="updateByPrimaryKey">
+    update product_sku
+    set product_id = #{productId},
+      sn = #{sn},
+      price = #{price}
+    where id = #{id}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+    select id, product_id, sn, price
+    from product_sku
+    where id = #{id}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, product_id, sn, price
+    from product_sku
+  </select>
+  <select id="queryByProductId" resultMap="BaseResultMap">
+     select id, product_id, sn, price
+    from product_sku where product_id = #{productId}
+  </select>
+  <select id="queryByProductSn" resultMap="BaseResultMap">
+    select id, product_id, sn, price
+    from product_sku where sn = #{skuSn}
+  </select>
+</mapper>

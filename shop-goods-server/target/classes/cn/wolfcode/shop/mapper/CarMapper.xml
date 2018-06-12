@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.wolfcode.shop.mapper.CarMapper">
+  <resultMap id="BaseResultMap" type="cn.wolfcode.shop.domain.Car">
+    <id column="id" property="id" />
+    <result column="user_id" property="userId" />
+    <result column="sku_id" property="skuId" />
+    <result column="product_name" property="productName" />
+    <result column="product_number" property="productNumber" />
+    <result column="product_img" property="productImg" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey">
+    delete from car
+    where id = #{id}
+  </delete>
+  <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+    insert into car (user_id, sku_id, product_name, product_number, product_img)
+    values (#{userId}, #{skuId}, #{productName}, #{productNumber}, #{productImg})
+  </insert>
+  <update id="updateByPrimaryKey">
+    update car
+    set user_id = #{userId},
+      sku_id = #{skuId},
+      product_name = #{productName},
+      product_number = #{productNumber},
+      product_img = #{productImg}
+    where id = #{id}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+    select id, user_id, sku_id, product_name, product_number, product_img
+    from car
+    where id = #{id}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, user_id, sku_id, product_name, product_number, product_img
+    from car
+  </select>
+  <select id="selectByUserIdAndSkuId" resultMap="BaseResultMap">
+    select id, user_id, sku_id, product_name, product_number, product_img
+    from car where user_id = #{userId} and sku_id = #{skuId}
+  </select>
+</mapper>
